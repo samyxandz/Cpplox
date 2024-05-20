@@ -1,6 +1,6 @@
-#include <cstring>      // std::strerror
-#include <fstream>      // readFile
-#include <iostream>     // std::getline
+#include <cstring>     
+#include <fstream>      
+#include <iostream>     
 #include <string>
 #include <vector>
 
@@ -35,8 +35,6 @@ void run(std::string_view source) {
 void runFile(std::string_view path) {
   std::string contents = readFile(path);
   run(contents);
-
-  // Indicate an error in the exit code.
   if (hadError) std::exit(65);
 }
 
