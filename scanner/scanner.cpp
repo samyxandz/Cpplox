@@ -6,8 +6,9 @@
 #include <map>
 #include <string>
 #include <string_view>
-#include <utility>      // std::move
+#include <utility>      
 #include <vector>
+//cleanup this somehow
 #include "Error.h"
 #include "Token.h"
 
@@ -27,6 +28,25 @@ std::string readFile(std::string_view path) {
 
   return contents;
 }
+const std::map<std::string, TokenType> Scanner::keywords =
+{
+  {"and",    TokenType::AND},
+  {"class",  TokenType::CLASS},
+  {"else",   TokenType::ELSE},
+  {"false",  TokenType::FALSE},
+  {"for",    TokenType::FOR},
+  {"fun",    TokenType::FUN},
+  {"if",     TokenType::IF},
+  {"nil",    TokenType::NIL},
+  {"or",     TokenType::OR},
+  {"print",  TokenType::PRINT},
+  {"return", TokenType::RETURN},
+  {"super",  TokenType::SUPER},
+  {"this",   TokenType::THIS},
+  {"true",   TokenType::TRUE},
+  {"var",    TokenType::VAR},
+  {"while",  TokenType::WHILE},
+};
 
 class Scanner {
   static const std::map<std::string, TokenType> keywords;
@@ -38,13 +58,11 @@ class Scanner {
   int line = 1;
 
 public:
-  Scanner(std::string_view source)
-    : source {source}
+  Scanner(std::string_view source): source {source}
   {}
 
   std::vector<Token> scanTokens() {
     while (!isAtEnd()) {
-      // We are at the beginning of the next lexeme.
       start = current;
       scanToken();
     }
@@ -102,8 +120,6 @@ private:
       case '"': string(); break;
 
       default:
-        // error(line, "Unexpected character");
-
         if (isDigit(c)) {
           number();
         } else if (isAlpha(c)) {
@@ -117,8 +133,6 @@ private:
 
   void identifier() {
     while (isAlphaNumeric(peek())) advance();
-
-    // addToken(IDENTIFIER);
 
     std::string text =
         std::string{source.substr(start, current - start)};
@@ -164,7 +178,7 @@ private:
     // The closing ".
     advance();
 
-    // Trim the surrounding quotes.
+    // Trim 
     std::string value{source.substr(start + 1, current - 2 - start)};
     addToken(STRING, value);
   }
@@ -213,35 +227,15 @@ private:
     addToken(type, nullptr);
   }
 
-  void addToken(TokenType type, std::any literal) {
+  void addToken(TokenType type, std::any literal) 
+  {
     std::string text{source.substr(start, current - start)};
-    tokens.emplace_back(type, std::move(text), std::move(literal),
-                        line);
+    tokens.emplace_back(type, std::move(text), std::move(literal),line);
   }
 };
 
-const std::map<std::string, TokenType> Scanner::keywords =
-{
-  {"and",    TokenType::AND},
-  {"class",  TokenType::CLASS},
-  {"else",   TokenType::ELSE},
-  {"false",  TokenType::FALSE},
-  {"for",    TokenType::FOR},
-  {"fun",    TokenType::FUN},
-  {"if",     TokenType::IF},
-  {"nil",    TokenType::NIL},
-  {"or",     TokenType::OR},
-  {"print",  TokenType::PRINT},
-  {"return", TokenType::RETURN},
-  {"super",  TokenType::SUPER},
-  {"this",   TokenType::THIS},
-  {"true",   TokenType::TRUE},
-  {"var",    TokenType::VAR},
-  {"while",  TokenType::WHILE},
-};
-
 void run(std::string_view source) {
-  Scanner scanner {source};
+  Scanner scanner{source};
   std::vector<Token> tokens = scanner.scanTokens();
 
   // For now, just print the tokens.
