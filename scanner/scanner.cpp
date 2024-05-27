@@ -28,26 +28,6 @@ std::string readFile(std::string_view path) {
 
   return contents;
 }
-const std::map<std::string, TokenType> Scanner::keywords =
-{
-  {"and",    TokenType::AND},
-  {"class",  TokenType::CLASS},
-  {"else",   TokenType::ELSE},
-  {"false",  TokenType::FALSE},
-  {"for",    TokenType::FOR},
-  {"fun",    TokenType::FUN},
-  {"if",     TokenType::IF},
-  {"nil",    TokenType::NIL},
-  {"or",     TokenType::OR},
-  {"print",  TokenType::PRINT},
-  {"return", TokenType::RETURN},
-  {"super",  TokenType::SUPER},
-  {"this",   TokenType::THIS},
-  {"true",   TokenType::TRUE},
-  {"var",    TokenType::VAR},
-  {"while",  TokenType::WHILE},
-};
-
 class Scanner {
   static const std::map<std::string, TokenType> keywords;
 
@@ -232,6 +212,26 @@ private:
     std::string text{source.substr(start, current - start)};
     tokens.emplace_back(type, std::move(text), std::move(literal),line);
   }
+};
+
+const std::map<std::string, TokenType> Scanner::keywords =
+{
+  {"and",    TokenType::AND},
+  {"class",  TokenType::CLASS},
+  {"else",   TokenType::ELSE},
+  {"false",  TokenType::FALSE},
+  {"for",    TokenType::FOR},
+  {"fun",    TokenType::FUN},
+  {"if",     TokenType::IF},
+  {"nil",    TokenType::NIL},
+  {"or",     TokenType::OR},
+  {"print",  TokenType::PRINT},
+  {"return", TokenType::RETURN},
+  {"super",  TokenType::SUPER},
+  {"this",   TokenType::THIS},
+  {"true",   TokenType::TRUE},
+  {"var",    TokenType::VAR},
+  {"while",  TokenType::WHILE},
 };
 
 void run(std::string_view source) {
