@@ -1,2 +1,0 @@
-- FIX the 17 errors
-- Finish the scanner
