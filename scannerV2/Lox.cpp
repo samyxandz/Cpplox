@@ -1,6 +1,6 @@
-#include <cstring>      // std::strerror
-#include <fstream>      // readFile
-#include <iostream>     // std::getline
+#include <cstring>      
+#include <fstream>      
+#include <iostream>     
 #include <string>
 #include <vector>
 
@@ -8,8 +8,7 @@
 std::string readFile(std::string_view path) {
   std::ifstream file{path.data(), std::ios::in | std::ios::binary | std::ios::ate};
   if (!file) {
-    std::cerr << "Failed to open file " << path << ": "
-              << std::strerror(errno) << "\n";
+    std::cerr << "Failed to open file " << path << ": ";
     std::exit(74);
   };
 
